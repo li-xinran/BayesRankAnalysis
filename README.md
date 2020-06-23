@@ -71,9 +71,9 @@ BARCW.fit = BayesRankCovWeight(pair.comp.ten = pair.comp.ten, X.mat = X.mat.sd,
                              iter.max = iter.max, print.opt = print.opt)
                              
 BARCW.fit$agg.rank = apply(BARCW.fit$mu[, -c(1:iter.burn)], 1, mean)  ## aggregated ranking list
-RankDist(BARCW.fit$agg.rank, rank.true)
+RankDist(BARCW.fit$agg.rank, rank.true)   ## Kendall tau distance between estimated and true ranking lists
 
-rowMeans( BARCW.fit$weight.vec )
+rowMeans( BARCW.fit$weight.vec )  ## posterior means of weights for all rankers
 ```
 
 #### BARCM
@@ -85,9 +85,9 @@ BARCM.fit = BayesRankCovMix(pair.comp.ten = pair.comp.ten, X.mat = X.mat.sd,
                             iter.max = iter.max, print.opt = print.opt)
                             
 BARCM.fit$agg.rank = apply(BARCM.fit$mu[, , -c(1:iter.burn)], 1, mean)  ## aggregated ranking list
-RankDist(BARCM.fit$agg.rank, rank.true)
+RankDist(BARCM.fit$agg.rank, rank.true)   ## Kendall tau distance between estimated and true ranking lists
 
-BARCM.fit$cluster.map = rep(NA, M)
+BARCM.fit$cluster.map = rep(NA, M)  ## get maximum a posterior estimates of cluster indicators for all rankers
 for(j in 1:M){
   sum.j = table(BARCM.fit$cluster[j, -c(1:iter.burn)])
   BARCM.fit$cluster.map[j] = as.numeric( names( sum.j[which.max(sum.j)] ) )
@@ -104,11 +104,11 @@ BARCMW.fit = BayesRankCovMixWeight(pair.comp.ten = pair.comp.ten, X.mat = X.mat.
                                    iter.max = iter.max, print.opt = print.opt)
                                    
 BARCMW.fit$agg.rank = apply(BARCMW.fit$mu[, , -c(1:iter.burn)], 1, mean)  ## aggregated ranking list
-RankDist(BARCMW.fit$agg.rank, rank.true)
+RankDist(BARCMW.fit$agg.rank, rank.true)   ## Kendall tau distance between estimated and true ranking lists
 
-rowMeans( BARCMW.fit$weight.vec )
+rowMeans( BARCMW.fit$weight.vec )  ## posterior means of weights for all rankers
 
-BARCMW.fit$cluster.map = rep(NA, M)
+BARCMW.fit$cluster.map = rep(NA, M)  ## get maximum a posterior estimates of cluster indicators for all rankers
 for(j in 1:M){
   sum.j = table(BARCMW.fit$cluster[j, -c(1:iter.burn)])
   BARCMW.fit$cluster.map[j] = as.numeric( names( sum.j[which.max(sum.j)] ) )
