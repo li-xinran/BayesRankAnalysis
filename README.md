@@ -28,36 +28,44 @@ sigma.true = 5  ## noise level
 Z.real = t( rmvnorm(M, mean = mu.true, sigma = sigma.true^2 * diag(N) ) ) ## scores for all rankers
 fullrank.real = apply(Z.real, 2, rank)  ## observed ranking lists
 ```
-#### calculate pairwise comparison matrices from the ranking lists
+
+#### Pre-steps for implementing Bayesian analysis 
 ```{r}
-pair.comp.ten = array(NA, dim = c(N, N, M))
+pair.comp.ten = array(NA, dim = c(N, N, M)) ## get pairwise comparison matrices from the ranking lists
 for(j in 1:M){
   pair.comp.ten[,,j] = FullRankToPairComp( fullrank.real[,j] )
 }
+X.mat.sd = t( (t( X.mat ) - colMeans(X.mat)) / apply(X.mat, 2, sd) )  ## standardized covariates
+iter.max = 1000   ## Gibbs sampler total iterations
+iter.burn = 200   ## Gibbs sampler burn-in iterations
+print.opt = 100  ## print a message every print.opt steps
 }
+```
 
-## standardized covariates
-X.mat.sd = t( (t( X.mat ) - colMeans(X.mat)) / apply(X.mat, 2, sd) )
-
-#### BAR without covariates ####
-iter.max = 1000
-iter.burn = 200
-print.opt = 100
-
+#### BAR without covariates 
+```{r}
 BAR.fit = BayesRankCovSimp(pair.comp.ten = pair.comp.ten, X.mat = matrix(NA, nrow =dim(pair.comp.ten)[1], ncol = 0), 
                               tau2.alpha = 1^2, nu.alpha = 3,
                               tau2.beta = 10^2, nu.beta = 3,
                               iter.max = iter.max, print.opt = print.opt)
 BAR.fit$agg.rank = apply(BAR.fit$mu[, -c(1:iter.burn)], 1, mean)
 RankDist(BAR.fit$agg.rank, rank.true)
+}
+```
 
+#### BARC
+```{r}
 BARC.fit = BayesRankCovSimp(pair.comp.ten = pair.comp.ten, X.mat = X.mat.sd, 
                                 tau2.alpha = 1^2, nu.alpha = 3,
                                 tau2.beta = 10^2, nu.beta = 3,
                                 iter.max = iter.max, print.opt = print.opt)
 BARC.fit$agg.rank = apply(BARC.fit$mu[, -c(1:iter.burn)], 1, mean)
 RankDist(BARC.fit$agg.rank, rank.true)
+}
+```
 
+#### BARCW
+```{r}
 BARCW.fit = BayesRankCovWeight(pair.comp.ten = pair.comp.ten, X.mat = X.mat.sd, 
                              tau2.alpha = 1^2, nu.alpha = 3,
                              tau2.beta = 10^2, nu.beta = 3,
@@ -66,6 +74,7 @@ BARCW.fit$agg.rank = apply(BARCW.fit$mu[, -c(1:iter.burn)], 1, mean)
 RankDist(BARCW.fit$agg.rank, rank.true)
 
 rowMeans( BARCW.fit$weight.vec )
+```
 
 
 BARCM.fit = BayesRankCovMix(pair.comp.ten = pair.comp.ten, X.mat = X.mat.sd, 
