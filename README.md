@@ -39,7 +39,6 @@ X.mat.sd = t( (t( X.mat ) - colMeans(X.mat)) / apply(X.mat, 2, sd) )  ## standar
 iter.max = 1000   ## Gibbs sampler total iterations
 iter.burn = 200   ## Gibbs sampler burn-in iterations
 print.opt = 100  ## print a message every print.opt steps
-}
 ```
 
 #### BAR without covariates 
@@ -48,9 +47,9 @@ BAR.fit = BayesRankCovSimp(pair.comp.ten = pair.comp.ten, X.mat = matrix(NA, nro
                               tau2.alpha = 1^2, nu.alpha = 3,
                               tau2.beta = 10^2, nu.beta = 3,
                               iter.max = iter.max, print.opt = print.opt)
-BAR.fit$agg.rank = apply(BAR.fit$mu[, -c(1:iter.burn)], 1, mean)
-RankDist(BAR.fit$agg.rank, rank.true)
-}
+                              
+BAR.fit$agg.rank = apply(BAR.fit$mu[, -c(1:iter.burn)], 1, mean)  ## aggregated ranking list
+RankDist(BAR.fit$agg.rank, rank.true)   ## Kendall tau distance between estimated and true ranking lists
 ```
 
 #### BARC
@@ -59,9 +58,9 @@ BARC.fit = BayesRankCovSimp(pair.comp.ten = pair.comp.ten, X.mat = X.mat.sd,
                                 tau2.alpha = 1^2, nu.alpha = 3,
                                 tau2.beta = 10^2, nu.beta = 3,
                                 iter.max = iter.max, print.opt = print.opt)
-BARC.fit$agg.rank = apply(BARC.fit$mu[, -c(1:iter.burn)], 1, mean)
-RankDist(BARC.fit$agg.rank, rank.true)
-}
+                                
+BARC.fit$agg.rank = apply(BARC.fit$mu[, -c(1:iter.burn)], 1, mean)  ## aggregated ranking list
+RankDist(BARC.fit$agg.rank, rank.true)   ## Kendall tau distance between estimated and true ranking lists
 ```
 
 #### BARCW
@@ -70,7 +69,8 @@ BARCW.fit = BayesRankCovWeight(pair.comp.ten = pair.comp.ten, X.mat = X.mat.sd,
                              tau2.alpha = 1^2, nu.alpha = 3,
                              tau2.beta = 10^2, nu.beta = 3,
                              iter.max = iter.max, print.opt = print.opt)
-BARCW.fit$agg.rank = apply(BARCW.fit$mu[, -c(1:iter.burn)], 1, mean)
+                             
+BARCW.fit$agg.rank = apply(BARCW.fit$mu[, -c(1:iter.burn)], 1, mean)  ## aggregated ranking list
 RankDist(BARCW.fit$agg.rank, rank.true)
 
 rowMeans( BARCW.fit$weight.vec )
@@ -83,7 +83,8 @@ BARCM.fit = BayesRankCovMix(pair.comp.ten = pair.comp.ten, X.mat = X.mat.sd,
                             tau2.beta = 10^2, nu.beta = 3,
                             gamma.a = 2, gamma.b = 4,
                             iter.max = iter.max, print.opt = print.opt)
-BARCM.fit$agg.rank = apply(BARCM.fit$mu[, , -c(1:iter.burn)], 1, mean)
+                            
+BARCM.fit$agg.rank = apply(BARCM.fit$mu[, , -c(1:iter.burn)], 1, mean)  ## aggregated ranking list
 RankDist(BARCM.fit$agg.rank, rank.true)
 
 BARCM.fit$cluster.map = rep(NA, M)
@@ -94,14 +95,15 @@ for(j in 1:M){
 BARCM.fit$cluster.map
 ```
 
-#### BARCM
+#### BARCMW
 ```{r}
 BARCMW.fit = BayesRankCovMixWeight(pair.comp.ten = pair.comp.ten, X.mat = X.mat.sd, 
                                    tau2.alpha = 1^2, nu.alpha = 3,
                                    tau2.beta = 10^2, nu.beta = 3,
                                    gamma.a = 2, gamma.b = 4,
                                    iter.max = iter.max, print.opt = print.opt)
-BARCMW.fit$agg.rank = apply(BARCMW.fit$mu[, , -c(1:iter.burn)], 1, mean)
+                                   
+BARCMW.fit$agg.rank = apply(BARCMW.fit$mu[, , -c(1:iter.burn)], 1, mean)  ## aggregated ranking list
 RankDist(BARCMW.fit$agg.rank, rank.true)
 
 rowMeans( BARCMW.fit$weight.vec )
