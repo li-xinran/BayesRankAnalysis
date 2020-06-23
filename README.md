@@ -24,6 +24,7 @@ for(i in 1:(L-1)){
 X.mat = rmvnorm(N, mean = rep(0, L), sigma = CovMat) ## covariate matrix 
 beta.true = c(3,2,1)
 mu.true = rowSums( X.mat^2 ) + as.vector(  X.mat %*% beta.true )  ## true evaluation score
+rank.true = rank(mu.true)  ## true ranking list
 sigma.true = 5  ## noise level
 Z.real = t( rmvnorm(M, mean = mu.true, sigma = sigma.true^2 * diag(N) ) ) ## scores for all rankers
 fullrank.real = apply(Z.real, 2, rank)  ## observed ranking lists
