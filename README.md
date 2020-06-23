@@ -41,7 +41,7 @@ iter.burn = 200   ## Gibbs sampler burn-in iterations
 print.opt = 100  ## print a message every print.opt steps
 ```
 
-#### BAR without covariates 
+#### Bayesian Analysis of Rank data without covariates 
 ```{r}
 BAR.fit = BayesRankCovSimp(pair.comp.ten = pair.comp.ten, X.mat = matrix(NA, nrow =dim(pair.comp.ten)[1], ncol = 0), 
                               tau2.alpha = 1^2, nu.alpha = 3,
@@ -52,7 +52,7 @@ BAR.fit$agg.rank = apply(BAR.fit$mu[, -c(1:iter.burn)], 1, mean)  ## aggregated 
 RankDist(BAR.fit$agg.rank, rank.true)   ## Kendall tau distance between estimated and true ranking lists
 ```
 
-#### BARC
+#### Bayesian Analysis of Rank data with entities' Covariates
 ```{r}
 BARC.fit = BayesRankCovSimp(pair.comp.ten = pair.comp.ten, X.mat = X.mat.sd, 
                                 tau2.alpha = 1^2, nu.alpha = 3,
@@ -63,7 +63,7 @@ BARC.fit$agg.rank = apply(BARC.fit$mu[, -c(1:iter.burn)], 1, mean)  ## aggregate
 RankDist(BARC.fit$agg.rank, rank.true)   ## Kendall tau distance between estimated and true ranking lists
 ```
 
-#### BARCW
+#### Bayesian Analysis of Rank data with entities' Covariates and rankers' Weights
 ```{r}
 BARCW.fit = BayesRankCovWeight(pair.comp.ten = pair.comp.ten, X.mat = X.mat.sd, 
                              tau2.alpha = 1^2, nu.alpha = 3,
@@ -76,7 +76,7 @@ RankDist(BARCW.fit$agg.rank, rank.true)   ## Kendall tau distance between estima
 rowMeans( BARCW.fit$weight.vec )  ## posterior means of weights for all rankers
 ```
 
-#### BARCM
+#### Bayesian Analysis of Rank data with Covariates of entities and Mixture of rankers with different opinion
 ```{r}
 BARCM.fit = BayesRankCovMix(pair.comp.ten = pair.comp.ten, X.mat = X.mat.sd, 
                             tau2.alpha = 1^2, nu.alpha = 3,
@@ -95,7 +95,7 @@ for(j in 1:M){
 BARCM.fit$cluster.map
 ```
 
-#### BARCMW
+#### Bayesian Analysis of Rank data with Covariates of entities and Mixture of rankers with different opinions and Weight
 ```{r}
 BARCMW.fit = BayesRankCovMixWeight(pair.comp.ten = pair.comp.ten, X.mat = X.mat.sd, 
                                    tau2.alpha = 1^2, nu.alpha = 3,
