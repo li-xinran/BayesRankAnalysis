@@ -10,29 +10,30 @@ install_github("li-xinran/BayesRankAnalysis")
 
 #### simulate inidividual ranking list
 M = 10  ## number of rankers
-N = 50  ## number of ranked items
-## number of covariates
-p = 4
 
-## true beta and true alpha
-alpha.true = rep(0,N) 
+N = 50  ## number of ranked items
+
+L = 4  ## number of covariates
+
+
+alpha.true = rep(0,N)
+
 beta.true = c(3,2,-1,-0.5)
 
-## noise level
-sigma.true.vec = c(1, 5, 10, 20, 40)
 sigma.true = 5
 
-## correlation for covariates
-rho=0.2
-## covariates for the N items
-CovMat=diag(p)
-for(i in 1:(p-1)){
-  for(j in (i+1):p){
+
+rho=0.2   ## correlation for covariates
+
+
+CovMat=diag(L)
+for(i in 1:(L-1)){
+  for(j in (i+1):L){
     CovMat[i,j]=rho^(abs(i-j))
     CovMat[j,i]=rho^(abs(i-j))
   }
 }
-X.mat = rmvnorm(N, mean = rep(0, p), sigma = CovMat)
+X.mat = rmvnorm(N, mean = rep(0, L), sigma = CovMat)
 
 ## true value for mu and rank
 mu.true = alpha.true + as.vector( X.mat %*% beta.true )
