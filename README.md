@@ -76,7 +76,8 @@ RankDist(BARCW.fit$agg.rank, rank.true)
 rowMeans( BARCW.fit$weight.vec )
 ```
 
-
+#### BARCM
+```{r}
 BARCM.fit = BayesRankCovMix(pair.comp.ten = pair.comp.ten, X.mat = X.mat.sd, 
                             tau2.alpha = 1^2, nu.alpha = 3,
                             tau2.beta = 10^2, nu.beta = 3,
@@ -85,13 +86,16 @@ BARCM.fit = BayesRankCovMix(pair.comp.ten = pair.comp.ten, X.mat = X.mat.sd,
 BARCM.fit$agg.rank = apply(BARCM.fit$mu[, , -c(1:iter.burn)], 1, mean)
 RankDist(BARCM.fit$agg.rank, rank.true)
 
+BARCM.fit$cluster.map = rep(NA, M)
 for(j in 1:M){
   sum.j = table(BARCM.fit$cluster[j, -c(1:iter.burn)])
   BARCM.fit$cluster.map[j] = as.numeric( names( sum.j[which.max(sum.j)] ) )
 }
 BARCM.fit$cluster.map
+```
 
-
+#### BARCM
+```{r}
 BARCMW.fit = BayesRankCovMixWeight(pair.comp.ten = pair.comp.ten, X.mat = X.mat.sd, 
                                    tau2.alpha = 1^2, nu.alpha = 3,
                                    tau2.beta = 10^2, nu.beta = 3,
@@ -102,10 +106,12 @@ RankDist(BARCMW.fit$agg.rank, rank.true)
 
 rowMeans( BARCMW.fit$weight.vec )
 
+BARCMW.fit$cluster.map = rep(NA, M)
 for(j in 1:M){
   sum.j = table(BARCMW.fit$cluster[j, -c(1:iter.burn)])
   BARCMW.fit$cluster.map[j] = as.numeric( names( sum.j[which.max(sum.j)] ) )
 }
 BARCMW.fit$cluster.map
+```
 
 
