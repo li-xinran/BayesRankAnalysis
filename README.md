@@ -4,4 +4,4 @@
 ### Installation
 library(devtools)
 
-github_install("li-xinran/BayesRankAnalysis")
+install_github("li-xinran/BayesRankAnalysis")
