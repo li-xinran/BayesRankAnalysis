@@ -1,0 +1,12 @@
+Package: BayesRankAnalysis
+Type: Package
+Title: Bayesian Analysis of Rank Data with Covariates and Heterogeneous Rankers
+Version: 0.1.0
+Author: Dingdong Yi, Xinran Li and Jun S. Liu
+Maintainer: Xinran Li <xinranli@illinois.edu>
+Description: Implement the Bayesian analysis for rank data with ranked entities' covariates described in the paper "Bayesian Analysis of Rank Data with Covariates and Heterogeneous Rankers".
+Depends: truncnorm, mvtnorm
+License:
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.0
