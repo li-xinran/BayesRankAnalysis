@@ -9,7 +9,7 @@ install_github("li-xinran/BayesRankAnalysis")
 ### An example illustrating the use of the package
 
 #### simulate inidividual ranking list
-## number of rankers
+####### number of rankers
 M = 10
 ## number of ranked items
 N = 50
